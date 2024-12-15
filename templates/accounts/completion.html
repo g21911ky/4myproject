@@ -1,0 +1,81 @@
+{% load static %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>課題完了画面</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <script>
+        function toggleReasonSection() {
+            const completedOnTime = document.getElementById('id_completed_on_time');
+            const reasonSection = document.getElementById('reason-section');
+            reasonSection.style.display = completedOnTime.value === 'no' ? 'block' : 'none';
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const completedOnTime = document.getElementById('id_completed_on_time');
+            completedOnTime.addEventListener('change', toggleReasonSection);
+            toggleReasonSection(); // 初期表示
+        });
+    </script>
+</head>
+<body>
+    <h1>課題完了</h1>
+    <div class="form-container">
+        <form method="POST" action="{% url 'completion_view' task.id %}">
+            {% csrf_token %}
+            <div class="input-field">
+                <label>科目名:</label>
+                <p>{{ task.subject_name }}</p>
+            </div>
+            <div class="input-field">
+                <label>課題名:</label>
+                <p>{{ task.assignment_name }}</p>
+            </div>
+            <div class="input-field">
+                <label>取り組む日程:</label>
+                <p>{{ task.work_date|date:"Y-m-d H:i" }} ~ {{ task.end_date|date:"H:i" }}</p>
+            </div>
+            <div class="input-field">
+                <label for="id_time_spent">かかった時間 (分):</label>
+                {{ form.time_spent }}
+            </div>
+            <div class="input-field">
+                <label for="id_completed_on_time">計画通りにできましたか？</label>
+                {{ form.completed_on_time }}
+            </div>
+
+            <!-- 理由選択 -->
+            <div class="input-field">
+                <div id="reason-section" style="display:none;">
+                    <label for="id_reason">できなかった理由を選択</label>
+                    {{ form.reason }}
+                </div>
+            </div>
+
+
+            <div class="input-field">
+                <label for="id_difficulty">どれくらいの難しさでしたか？</label>
+                {{ form.difficulty }}
+                <p>
+                    1. 楽勝<br>
+                    2. 気楽<br>
+                    3. やや難しい<br>
+                    4. 挑戦的<br>
+                    5. 挫折しそう
+                </p>
+            </div>
+            
+            <div class="input-field">
+                <label for="id_comment">コメント:</label>
+                {{ form.comment }}
+            </div>
+
+            <button type="submit" class="btn">保存</button>
+        </form>
+        <a class="back-link" href="{% url 'task_list' %}">タスク一覧に戻る</a>
+    </div>
+</body>
+</html>
+

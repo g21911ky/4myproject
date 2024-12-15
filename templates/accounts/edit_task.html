@@ -1,0 +1,26 @@
+
+{% load static %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>課題編集画面</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>課題編集</h1>
+    <div class="form-container">
+        <form method="POST">
+            {% csrf_token %}
+            <!-- フォームフィールド -->
+            {{ form.as_p }}
+            <!-- 保存ボタン -->
+            <button type="submit" class="btn">保存</button>
+        </form>
+        <!-- タスク一覧へのリンク -->
+        <a class="back-link" href="{% url 'task_list' %}">タスク一覧に戻る</a>
+    </div>
+</body>
+</html>

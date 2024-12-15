@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block title %}学習の軌跡{% endblock %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+{% block content %}
+<div class="container">
+    <!-- サイドメニュー -->
+    <div class="sidebar">
+        <h2>メニュー</h2>
+        <ul>
+            <!--li><a href="{% url 'home' %}">週間計画表</a></li-->
+            <li><a href="{% url 'task_list' %}">課題一覧</a></li>
+            <li><a href="{% url 'diary' %}">完了課題一覧</a></li>
+            <li><a href="{% url 'graph_display' %}">学習の軌跡</a></li>
+        </ul>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="main-content">
+        <!-- ユーザー名の表示 -->
+        {% if user.is_authenticated %}
+            <h4>ようこそ、{{ user.username }}さん</h4>
+        {% else %}
+            <h4>ログインしてください</h4>
+        {% endif %}
+        <h1>学習の軌跡</h1>
+        <div class="graphs">
+            <!-- 難易度別学習時間の帯グラフ -->
+            <h2>＜難易度別＞学習時間</h2>
+            <canvas id="difficultyTimeChart" width="400" height="200"></canvas>
+
+            <!-- 難易度別課題数の帯グラフ -->
+            <h2>＜難易度別＞課題数</h2>
+            <canvas id="difficultyTaskChart" width="400" height="200"></canvas>
+
+            <!-- 科目別学習時間の帯グラフ -->
+            <h2>＜科目別＞学習時間</h2>
+            <canvas id="subjectTimeChart" width="400" height="200"></canvas>
+
+            <!-- 計画通りにできたかの比率 (円グラフ) -->
+            <h2>計画通りにできましたか</h2>
+            <canvas id="completedRatioChart" width="400" height="200"></canvas>
+
+            <!-- 計画通りにできなかった理由 (棒グラフ) -->
+            <h2>計画通りにできなかった理由</h2>
+            <canvas id="completionReasonChart" width="400" height="200"></canvas>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+                // 難易度別学習時間の帯グラフ
+                var ctx1 = document.getElementById('difficultyTimeChart').getContext('2d');
+                var difficultyTimeChart = new Chart(ctx1, {
+                    type: 'bar',
+                    data: {
+                        labels: [1, 2, 3, 4, 5],  // 難易度
+                        datasets: [{
+                            label: '学習時間 (時間)',
+                            data: {{ difficulty_time_data|safe }},
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    }
+                });
+
+                // 難易度別課題数の帯グラフ
+                var ctx2 = document.getElementById('difficultyTaskChart').getContext('2d');
+                var difficultyTaskChart = new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: [1, 2, 3, 4, 5],  // 難易度
+                        datasets: [{
+                            label: '課題数',
+                            data: {{ difficulty_task_data|safe }},
+                            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                            borderColor: 'rgba(153, 102, 255, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                ticks: {
+                                    stepSize: 1,  // 縦軸の間隔を整数に固定
+                                    callback: function(value) {
+                                        return Number.isInteger(value) ? value : null;  // 整数のみ表示
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                
+
+                // 科目別学習時間の帯グラフ
+                var ctx3 = document.getElementById('subjectTimeChart').getContext('2d');
+                var subjectTimeChart = new Chart(ctx3, {
+                    type: 'bar',
+                    data: {
+                        labels: {{ subject_data|safe }}.map(item => item[0]),  // 科目名
+                        datasets: [{
+                            label: '学習時間 (時間)',
+                            data: {{ subject_data|safe }}.map(item => item[1]),  // 学習時間
+                            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 1
+                        }]
+                    }
+                });
+
+                console.log({{ subject_data|safe }});  // subject_dataが正しく渡されているか確認
+
+                var testData = {{ subject_data|safe }};
+                console.log(testData.map(item => item[0]));  // 科目名のみ
+                console.log(testData.map(item => item[1]));  // 学習時間のみ
+
+
+                // 計画通りにできたかの比率 (円グラフ)
+                var ctx4 = document.getElementById('completedRatioChart').getContext('2d');
+                var completedRatioChart = new Chart(ctx4, {
+                    type: 'pie',
+                    data: {
+                        labels: ['はい', 'いいえ'],
+                        datasets: [{
+                            data: {{ completed_ratio_data|safe }},
+                            backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+                            borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
+                            borderWidth: 1
+                        }]
+                    }
+                });
+
+                // 計画通りにできなかった理由 (棒グラフ)
+                var ctx5 = document.getElementById('completionReasonChart').getContext('2d');
+                // reason_data を正しく解析
+                var completionReasonData = JSON.parse('{{ reason_data|safe }}');  // 安全にJSONパース
+                console.log(completionReasonData);  // デバッグ用出力
+
+                var completionReasonChart = new Chart(ctx5, {
+                    type: 'bar',
+                    data: {
+                        labels: completionReasonData.map(item => item[0]),
+                        datasets: [{
+                            label: '計画通りに出来なかった理由',
+                            data: completionReasonData.map(item => item[1]),
+                            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                            borderColor: 'rgba(255, 206, 86, 1)',
+                            borderWidth: 1
+                        }]
+                    }
+                });           
+            </script>
+        </div>
+    </div>
+</div>
+{% endblock %}

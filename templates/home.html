@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}週間計画表{% endblock %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+{% block content %}
+<div class="container">
+    <!-- ユーザー名の表示 -->
+    {% if user.is_authenticated %}
+        <p>ようこそ、{{ user.username }}さん</p>
+    {% else %}
+        <p>ログインしてください</p>
+    {% endif %}
+
+    <!-- サイドメニュー -->
+    <div class="sidebar">
+        <h2>メニュー</h2>
+        <ul>
+            <!--li><a href="{% url 'home' %}">週間計画表</a></li-->
+            <li><a href="{% url 'task_list' %}">課題一覧</a></li>
+            <li><a href="{% url 'diary' %}">完了課題一覧</a></li>
+            <li><a href="{% url 'graph_display' %}">学習の軌跡</a></li>
+        </ul>
+    </div>
+
+    <div class="week-navigation">
+        <a href="{% url 'home_with_offset' week_offset=week_offset|add:'-1' %}" {% if week_offset|add:'-1' < 0 %}style="pointer-events: none; color: gray;"{% endif %}>前の週</a>
+        <a href="{% url 'home_with_offset' week_offset=week_offset|add:'1' %}">次の週</a>
+    </div>        
+
+    <div class="weekly-schedule">
+        <table>
+            <thead>
+                <tr>
+                    <th>時間</th>
+                    {% for day in days %}
+                        <th>{{ day|date:'l' }}</th> <!-- 曜日を表示 -->
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for time_slot in time_slots %}
+                <tr>
+                    <td>{{ time_slot }}</td>
+                    {% for day in days %}
+                    <td>
+                        {% for task in tasks %}
+                        {% if task.work_date == day and task.work_time == time_slot %}
+                            <div>{{ task.assignment_name }}</div>
+                        {% endif %}
+                        {% endfor %}
+                        {% if not task_found %}
+                            <div>タスクなし</div> <!-- タスクがない場合のメッセージ -->
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>課題作成画面</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>課題作成</h1>
+    <div class="form-container">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="input-field">
+                <label for="id_subject_name">科目名</label>
+                <input type="text" name="subject_name" id="id_subject_name" value="{{ form.subject_name.value|default_if_none:'' }}" required>
+            </div>
+
+            <div class="input-field">
+                <label for="id_assignment_name">課題名</label>
+                <input type="text" name="assignment_name" id="id_assignment_name" value="{{ form.assignment_name.value|default_if_none:'' }}" required>
+            </div>
+
+            <div class="input-field">
+                <label for="id_deadline">締切日程（入力例：2024-12-01）</label>
+                <input type="text" name="deadline" id="id_deadline" value="{{ form.deadline.value|default_if_none:'' }}" required>
+            </div>
+
+            <div class="input-field">
+                <label for="id_deadline_time">締切時間</label>
+                <input type="time" name="deadline_time" id="id_deadline_time" value="{{ form.deadline_time.value }}" required>
+            </div>
+
+            <div class="input-field">
+                <label for="id_work_date">取り組む日程（入力例：2024-12-01）</label>
+                <input type="text" name="work_date" id="id_work_date" value="{{ form.work_date.value|default_if_none:'' }}" required>
+            </div>
+
+            <div class="input-field">
+                <label for="id_work_time">開始時刻</label>
+                <input type="time" name="work_time" id="id_work_time" value="{{ form.work_time.value }}" required>
+            </div>
+            
+            <div class="input-field">
+                <label for="id_end_time">終了時刻</label>
+                <input type="time" name="end_time" id="id_end_time" required>
+            </div>
+
+            <div class="input-field">
+                <label for="id_memo">メモ</label>
+                <textarea name="memo" id="id_memo" rows="4" required>{{ form.memo.value|default_if_none:'' }}</textarea>
+            </div>
+
+            <button type="submit" class="btn">保存</button>
+        </form>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ログイン画面</title>
+        <!-- CSSファイルの読み込み -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    </head>
+    
+<body>
+    <div class="form-container">
+        <h2>ログイン</h2>
+        <form method="post">
+            {% csrf_token %}  <!-- CSRFトークン -->
+            {{ form.username.label_tag }} {{ form.username }}  <!-- ユーザー名 -->
+            <br>
+            <div class="help-text">{{ form.username.help_text }}</div>
+            
+            {{ form.password.label_tag }} {{ form.password }}  <!-- パスワード -->
+            <br>
+            <div class="help-text">{{ form.password.help_text }}</div>
+            
+            <button type="submit">ログイン</button>
+        </form>        
+        <p>まだアカウントを持っていませんか？ <a href="{% url 'signup' %}">登録</a></p>
+    </div>
+</body>
+</html>
+

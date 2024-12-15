@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} タイトル {% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- ナビゲーションメニューを削除 -->
+    <!-- <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">週間計画表</a></li>
+            <li><a href="{% url 'task_list' %}">課題一覧</a></li>
+            <li><a href="{% url 'task_create' %}">課題作成</a></li>
+            <li><a href="{% url 'diary' %}">日記画面</a></li> 
+            <li><a href="{% url 'graph_display' %}">グラフ表示</a></li>
+            <li><a href="{% url 'logout' %}">ログアウト</a></li>
+        </ul>
+    </nav> -->
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
+

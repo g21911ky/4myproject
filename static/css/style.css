@@ -1,0 +1,183 @@
+/* 全体の設定 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9; /* 背景色 */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* 上寄せ */
+    min-height: 100vh;
+}
+
+/* コンテナ設定 */
+.container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    justify-content: center;
+}
+
+/* メインコンテンツ設定 */
+.main-content {
+    margin-left: 180px; /* サイドメニューの余白を縮める */
+    padding: 30px; /* 内側の余白を増やす */
+    width: calc(100% - 180px); /* 幅を広げる */
+    background-color: #f9f9f9;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* フォームの共通設定 */
+.form-container {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* フォーム入力フィールド */
+.input-field {
+    width: 75%; /* 適宜変更 */
+    padding: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.result-item {
+    font-size: 14px;
+}
+
+
+/* ラベルの共通設定 */
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* テキストエリア */
+textarea {
+    width: 100%;
+    padding: 10px;
+    height: 150px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+}
+
+
+/* ヘッダー */
+h1, h2, h4 {
+    text-align: center; /* テキストを中央寄せ */
+    color: #333;
+    margin-bottom: 20px;
+}
+
+
+/* バックリンク */
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+    text-decoration: none;
+}
+
+/* サイドバー設定（もし必要なら） */
+.sidebar {
+    width: 200px;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.sidebar h2 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #444;
+    text-decoration: underline;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* 水平方向に中央揃え */
+    margin: 20px 0;
+}
+
+
+/* ボタンの基本スタイル */
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 4px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff; /* 青色 */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* ボタンのホバー時のスタイル */
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* 編集ボタンのスタイル */
+.btn-secondary {
+    background-color: #6c757d; /* 灰色 */
+}
+
+/* 編集ボタンのホバー時のスタイル */
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* 完了ボタンのスタイル */
+.btn-success {
+    background-color: #28a745; /* 緑色 */
+}
+
+/* 完了ボタンのホバー時のスタイル */
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.difficulty-description {
+    font-size: 16px;
+    color: #555;
+    margin-top: 5px;
+}
